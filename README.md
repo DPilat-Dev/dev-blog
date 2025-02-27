@@ -48,5 +48,5 @@ Still deciding on where to deploy this
 - **Database** → PostgreSQL
 
 ---
-🚀 **This project is under development. Contributions & feedback are welcome!**
+🚀 **This project is under development. Feedback is welcome!**
 
