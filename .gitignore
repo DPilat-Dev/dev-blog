@@ -421,3 +421,50 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Next.js build output
+.next/
+out/
+
+# Static exports
+out/
+
+# Ignoring dependencies
+node_modules/
+
+# Logs and Debug Files
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Editor directories and settings
+.vscode/
+.idea/
+
+# Environment Variables
+.env.local
+.env.development.local
+.env.production.local
+.env.test.local
+.env*
+
+# TypeScript Build Output
+*.tsbuildinfo
+
+# Jest test coverage
+coverage/
+
+# Lint cache
+.eslintcache
+
+# MacOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+
+# Optional: Ignore package-lock.json if using yarn
+package-lock.json
