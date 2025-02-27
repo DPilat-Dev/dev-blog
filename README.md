@@ -35,11 +35,11 @@ npm run dev
 ```
 
 ## Features (Planned)
-✅ Blog post creation & editing
-✅ Markdown support
-✅ Authentication (JWT-based admin login)
-✅ SEO Optimization
-✅ Image Upload
+- ✅ Blog post creation & editing
+- ✅ Markdown support
+- ✅ Authentication (JWT-based admin login)
+- ✅ SEO Optimization
+- ✅ Image Upload
 
 ## Deployment
 Still deciding on where to deploy this
