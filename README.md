@@ -2,7 +2,7 @@
 
 This is a personal Dev Blog CMS built with:
 - **Frontend:** Next.js (React + TypeScript)
-- **Backend:** ASP.NET Core 9 Web API
+- **Backend:** ASP.NET 9 Web API
 - **Database:** PostgreSQL / SQL Server
 
 ## Project Structure
@@ -16,7 +16,7 @@ This is a personal Dev Blog CMS built with:
 
 ## Setup Instructions
 
-### 1️⃣ Backend Setup (ASP.NET Core 8)
+### 1️⃣ Backend Setup (ASP.NET 9)
 ```bash
 cd backend
 # Install dependencies
