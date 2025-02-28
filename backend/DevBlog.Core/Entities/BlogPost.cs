@@ -17,5 +17,9 @@ namespace DevBlog.Core.Entities
         public string Content { get; set; } = string.Empty;
 
         public DateTime PublishedAt { get; set; } = DateTime.Now;
+
+        public string UserId { get; set; } = string.Empty;
+
+        public User? Author { get; set; }
     }
 }
