@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace DevBlog.API.Controllers
 {
@@ -13,58 +14,40 @@ namespace DevBlog.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _config;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IConfiguration config)
+        public AuthController(IConfiguration config)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _config = config;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
-        {
-            var user = new User { UserName = request.UserName, Email = request.Email, FullName = request.FullName };
-            var result = await _userManager.CreateAsync(user, request.Password);
-
-            if (!result.Succeeded)
-                return BadRequest(result.Errors);
-
-            return Ok(new { message = "User registered successfully" });
-        }
-
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] Core.DTOs.LoginRequest request)
+        public IActionResult Login()
         {
-            var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null)
-                return Unauthorized(new { message = "Invalid username or password"});
-
-            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Password);
-            if (!isPasswordValid)
-                return Unauthorized(new { message = "Invalid username or password" });
-
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.UTF8.GetBytes(_config["JwtSettings:SecretKey"]);
 
-
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.NameIdentifier, user.Id)
-
-                }),
-                Expires = DateTime.UtcNow.AddHours(3),
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, "testuser") }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                Issuer = _config["JwtSettings:Issuer"],
+                Audience = _config["JwtSettings:Audience"],
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            return Ok(new { token = tokenHandler.WriteToken(token) });
+            var jwt = tokenHandler.WriteToken(token);
+
+            Response.Cookies.Append("jwt", jwt, new CookieOptions
+            {
+                HttpOnly = true,  // ✅ Prevent JavaScript access
+                Secure = true,    // ✅ Set to false for local testing (true in production)
+                SameSite = SameSiteMode.Strict, // ✅ Prevents CSRF
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
+
+            return Ok(new { token = jwt });
         }
     }
 }
